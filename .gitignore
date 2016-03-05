@@ -38,3 +38,4 @@ node_modules
 # eclipse
 .project
 /bd.sqlite
+/scripts/

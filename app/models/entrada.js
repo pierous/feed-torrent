@@ -12,6 +12,11 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
+		
+		imagen: {
+			type: DataTypes.STRING,
+		},
+		
 		categoria: {
 			type: DataTypes.STRING,
 			allowNull: false,
@@ -27,6 +32,12 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false,
 			defaultValue: false,
 		},
+		
+		RssId: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			defaultValue: 1,
+		},
+		
 	});
-	
 }

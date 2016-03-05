@@ -1,8 +1,8 @@
-var Entrada = require('../models').Entrada;
+var Rss = require('../models').Rss;
 
-// Obtiene todas las entradas de la base de datos
+//Obtiene todas los rss de la base de datos
 exports.findAll = function (req, res) {
-	Entrada.findAll({}).then(function(result) {
+	Rss.findAll({}).then(function(result) {
 		if (result) {
 			res.json(result);
 		} else {
@@ -11,31 +11,29 @@ exports.findAll = function (req, res) {
 	});
 }
 
-// Guarda una entrada en base de datos
+// Guarda un rss en base de datos
 exports.save = function(req, res) {
-	Entrada.create({
-		titulo: req.body.titulo,
+	Rss.create({
+		nombre: req.body.nombre,
 		url: req.body.url,
-		categoria: req.body.categories,
-		fecha: new Date(req.body.fecha),
+		feed: req.body.feed,
     }).then(function(result) {
     	res.json(result);
     });
 }
 
-// Modifica una entrada de la base de datos
+// Modifica un rss de la base de datos
 exports.update = function(req, res) {
-	Entrada.find({
+	Rss.find({
 		where: {
 			id: req.params.id
 		}
 	}).then(function(result) {
 		if (result) {
 			todo.updateAttributes({
-				titulo: req.body.titulo,
+				nombre: req.body.nombre,
 				url: req.body.url,
-				categoria: req.body.categories,
-				fecha: req.body.fecha,
+				feed: req.body.feed,
 			}).then(function(result) {
 				res.send(result);
 			});
@@ -43,9 +41,9 @@ exports.update = function(req, res) {
 	});
 }
 
-// Elimina una entrada de la base de Datos
+// Elimina un rss de la base de Datos
 exports.delete = function(req, res) {
-	Entrada.destroy({
+	Rss.destroy({
 		where: {
 			id: req.params.id
 		}
