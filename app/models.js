@@ -16,15 +16,17 @@ var sequelize = new Sequelize(null, null, null, {
  * Entidades
  */
 var rss = sequelize.import(__dirname + '/models/rss');
-//var paso = sequelize.import(__dirname + '/paso');
+var categoria = sequelize.import(__dirname + '/models/categoria');
+//var paso = sequelize.import(__dirname + '/models/paso');
 var entrada = sequelize.import(__dirname + '/models/entrada');
-//var coleccion = sequelize.import(__dirname + '/coleccion');
-//var categoria = sequelize.import(__dirname + '/categoria');
+//var coleccion = sequelize.import(__dirname + '/models/coleccion');
 
 /**
  * Relaciones
  */
-entrada.belongsTo(rss);
+categoria.belongsTo(rss, {foreignKey: 'rssId'});
+entrada.belongsTo(rss, {foreignKey: 'rssId'});
+entrada.belongsTo(categoria, {foreignKey: 'categoriaId'});
 
 /**
  * Exportación de modelos
@@ -33,7 +35,7 @@ exports.Rss = rss;
 //exports.Paso = paso;
 exports.Entrada = entrada;
 //exports.Coleccion = coleccion;
-//exports.Categoria = categoria;
+exports.Categoria = categoria;
 
 /**
  * Se crea e inicializa la base de datos

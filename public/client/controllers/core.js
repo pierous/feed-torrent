@@ -1,9 +1,17 @@
-angular.module('MainApp', [])
+angular.module('MainApp', []);
 
 function mainController($scope, $http) {
 	$scope.newPersona = {};
 	$scope.personas = {};
 	$scope.selected = false;
+	
+	// Obtenemos todos los datos de la base de datos
+	$http.get('/api/rss').success(function(data) {
+		$scope.rsslist = data;
+	})
+	.error(function(data) {
+		console.log('Error: ' + data);
+	});
 
 	// Obtenemos todos los datos de la base de datos
 	$http.get('/api/entrada').success(function(data) {

@@ -1,60 +1,128 @@
 var request = require('request');
 var FeedParser = require('feedparser');
 var Entrada = require('../models').Entrada;
+var Categoria = require('../models').Categoria;
+var Rss = require('../models').Rss;
 
-var req = request('http://www.newpct1.com/feed');
-var feedparser = new FeedParser();
+var cache = [];
+var interval = null;
 
-// ERROR url
-req.on('error', function (error) {
-	console.log('Error request.')
-});
-	
-// OK url
-req.on('response', function (res) {
-	
-	var stream = this;
-	if (res.statusCode != 200) return this.emit('error', new Error('Bad status code'));
-	stream.pipe(feedparser);
-	
+Rss.findAll({}).then(function(result) {
+	if (result) {
+		result.forEach(readRss);
+	} else {
+		console.log('Error al recuperar lista de RSS');
+	}
+}).error(function(err) {
+	console.error('No hay feeds para leer. -> ' + err);
 });
 
-// ERROR rss
-feedparser.on('error', function(error) {
-	// always handle errors
-});
+
+function readRss(rssFeed) {
 	
-// OK rss
-feedparser.on('readable', function() {
+	var req = request(rssFeed.feed);
+	var feedparser = new FeedParser();
+
+	// ERROR url
+	req.on('error', function (err) {
+		console.error('Error request. ' + err);
+	});
 	
-	var stream = this;
-	var meta = this.meta;
-	var item;
-	var number = 0;
+	// OK url
+	req.on('response', function (res) {
 	
-	while (item = stream.read()) {
+		var stream = this;
+		if (res.statusCode != 200) return this.emit('error', new Error('Bad status code'));
+		stream.pipe(feedparser);
+	});
+
+	// ERROR rss
+	feedparser.on('error', function(err) {
+		console.error('Error read feed. ' + err);
+	});
+	
+	// OK rss
+	feedparser.on('readable', function() {
+	
+		var stream = this;
+		var meta = this.meta;
+		var item;
+	
+		while (item = stream.read()) {
 		
-		++number;
-		console.log( number + ' ' + item.title);
-		console.log(item.categories);
-		console.log(item.date);
-		console.log(item.link);
-		console.log();
-		
-		var imagen = null;
-		if (item.enclosures && item.enclosures.length > 0) {
-			imagen = item.enclosures[0].url;
+			console.log( cache.length + ' - ' + item.title);
+			console.log();
+			
+			var imagen = null;
+			if (item.enclosures && item.enclosures.length > 0) {
+				imagen = item.enclosures[0].url;
+			}
+			
+			var entrada = {
+				titulo: 		item.title,
+				url: 			item.link,
+				imagen: 		imagen,
+				fecha: 			new Date(item.date),
+				rssId: 			rssFeed.id,
+				categoria: 		item.categories.toString(),
+			};
+			
+			cache.push(entrada);
 		}
 		
-		Entrada.create({
-			titulo: 	item.title,
-			url: 		item.link,
-			imagen: 	imagen,
-			categoria: 	item.categories.toString(),
-			fecha: 		new Date(item.date),
-		}).then(function(result) {
-	    	console.log('--> Guardado: ' + result.titulo);
-	    });
+		if (!interval) {
+			interval = setTimeout(checkCache, 30000);
+		}
 		
+	});
+	
+}
+
+function checkCache() {
+	
+	interval = null;
+	
+	if (cache.length > 0) {
+		
+		var entrada = cache.pop();
+		crearCategoria(entrada);
 	}
-});
+}
+
+function crearCategoria(entrada) {
+	
+	Categoria.findOrCreate({
+		where: {
+			nombre: entrada.categoria,
+		}, defaults: {
+			rssId: 	entrada.rssId,
+		}
+	}).spread(function(categoria, created) {
+		if (created) {
+			console.log('Se ha creado la categoría ' + categoria.nombre);
+		}
+		entrada.categoriaId = categoria.id;
+		crearEntrada(entrada);
+	}).error(function(err) {
+		console.error('No se ha podido guardar la categoria. ' + err);
+		checkCache();
+	});
+}
+
+function crearEntrada(entrada) {
+	
+	Entrada.create({
+		titulo: 		entrada.titulo,
+		url: 			entrada.url,
+		imagen: 		entrada.imagen,
+		fecha: 			entrada.fecha,
+		categoriaId: 	entrada.categoriaId,
+		rssId: 			entrada.rssId,
+	}).then(function(result) {
+		console.log('--> Guardado: ' + result.titulo);
+	}).catch(function(err) {
+		console.error('No se ha podido guardar la entrada. ' + err);
+	}).finally(function() {
+		checkCache();
+	});
+}

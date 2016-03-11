@@ -17,11 +17,6 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING,
 		},
 		
-		categoria: {
-			type: DataTypes.STRING,
-			allowNull: false,
-		},
-		
 		fecha: {
 			type: DataTypes.DATE,
 			allowNull: false,
@@ -33,10 +28,14 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue: false,
 		},
 		
-		RssId: {
+		rssId: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
-			defaultValue: 1,
+		},
+		
+		categoriaId: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
 		},
 		
 	});

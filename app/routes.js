@@ -1,5 +1,6 @@
-var rssController = require ('./controllers/rss.server.controller');
-var entradaController = require ('./controllers/entrada.server.controller');
+var rssController = require('./controllers/rss.server.controller');
+var categoriaController = require('./controllers/categoria.server.controller');
+var entradaController = require('./controllers/entrada.server.controller');
 
 module.exports = function(app) {
 	
@@ -8,12 +9,24 @@ module.exports = function(app) {
 	 */
 	// devolver todos los rss
 	app.get('/api/rss', rssController.findAll);
-	// Crear un noevo rss
+	// Crear un nuevo rss
 	app.post('/api/rss', rssController.save);
 	// Modificar los datos de un rss
 	app.put('/api/rss/:id', rssController.update);
 	// Borrar un rss
 	app.delete('/api/rss/:id', rssController.delete);
+	
+	/**
+	 * CATEGORIA
+	 */
+	// devolver todas las categorías
+	app.get('/api/categoria', categoriaController.findAll);
+	// Crear una nueva categoría
+	app.post('/api/categoria', categoriaController.save);
+	// Modificar los datos de una categoría
+	app.put('/api/categoria/:id', categoriaController.update);
+	// Borrar una categoría
+	app.delete('/api/categoria/:id', categoriaController.delete);
 
 	/**
 	 * ENTRADA
