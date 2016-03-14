@@ -39,6 +39,8 @@ module.exports = function(app) {
 	app.put('/api/entrada/:id', entradaController.update);
 	// Borrar una entrada
 	app.delete('/api/entrada/:id', entradaController.delete);
+	// Descargar torrent de una entrada
+	app.get('/api/entrada/download/:id', entradaController.download);
 	
 	
 	/**

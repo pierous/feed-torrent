@@ -5,7 +5,7 @@ function mainController($scope, $http) {
 	$scope.personas = {};
 	$scope.selected = false;
 	
-	// Obtenemos todos los datos de la base de datos
+	// Obtenemos todos los rss de la base de datos
 	$http.get('/api/rss').success(function(data) {
 		$scope.rsslist = data;
 	})
@@ -61,9 +61,9 @@ function mainController($scope, $http) {
 
 	// Función que desgarga torrent de la entrada seleccionada
 	$scope.downloadTorrent = function(id) {
-		$http.get('' + id)
-		.success(function(data){
-			// No se hace nada?
+		$http.get('/api/entrada/download/' + id)
+		.success(function(result) {
+			window.location.href = result;
 		})
 		.error(function(data) {
 			console.log('Error' + data);

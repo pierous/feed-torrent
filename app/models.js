@@ -17,7 +17,7 @@ var sequelize = new Sequelize(null, null, null, {
  */
 var rss = sequelize.import(__dirname + '/models/rss');
 var categoria = sequelize.import(__dirname + '/models/categoria');
-//var paso = sequelize.import(__dirname + '/models/paso');
+var paso = sequelize.import(__dirname + '/models/paso');
 var entrada = sequelize.import(__dirname + '/models/entrada');
 //var coleccion = sequelize.import(__dirname + '/models/coleccion');
 
@@ -26,13 +26,14 @@ var entrada = sequelize.import(__dirname + '/models/entrada');
  */
 categoria.belongsTo(rss, {foreignKey: 'rssId'});
 entrada.belongsTo(rss, {foreignKey: 'rssId'});
+paso.belongsTo(rss, {foreignKey: 'rssId'});
 entrada.belongsTo(categoria, {foreignKey: 'categoriaId'});
 
 /**
  * Exportación de modelos
  */
 exports.Rss = rss;
-//exports.Paso = paso;
+exports.Paso = paso;
 exports.Entrada = entrada;
 //exports.Coleccion = coleccion;
 exports.Categoria = categoria;

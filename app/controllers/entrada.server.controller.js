@@ -1,4 +1,5 @@
 var Entrada = require('../models').Entrada;
+var downloadService = require('../services/download.server.service');
 
 // Obtiene todas las entradas de la base de datos
 exports.findAll = function (req, res) {
@@ -56,4 +57,21 @@ exports.delete = function(req, res) {
 			res.status(500).send({ error: 'Something failed!' });
 		}
   });	
+}
+
+// Descarga el torrent asociado a una entrada
+exports.download = function(req, res) {
+	Entrada.find({
+		where: {
+			id: req.params.id
+		}
+	}).then(function(result) {
+		if (result) {
+			 downloadService.download(result, function(torrent) {
+				 res.send(torrent); 
+			 });
+		} else {
+			res.status(500).send({ error: 'Something failed!' });
+		}
+	});
 }

@@ -20,7 +20,7 @@ module.exports = function(sequelize, DataTypes) {
 		
 	}, {
 		hooks: {
-			beforeValidate: function(categoria) {
+			beforeCreate: function(categoria) {
 				if (categoria.nombre.toLowerCase().includes('serie')) {
 					categoria.serie = true;
 				} else {

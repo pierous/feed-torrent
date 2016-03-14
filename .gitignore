@@ -39,3 +39,4 @@ node_modules
 .project
 /bd.sqlite
 /scripts/
+/torrents/
