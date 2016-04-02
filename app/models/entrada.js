@@ -38,5 +38,10 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false,
 		},
 		
+		serieId: {
+			type: DataTypes.INTEGER,
+			defaultValue: null,
+		},
+		
 	});
 }

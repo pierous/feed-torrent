@@ -1,7 +1,11 @@
 var request = require('request');
 var FeedParser = require('feedparser');
+var Sequelize = require('sequelize');
+
+// MODELOS
 var Entrada = require('../models').Entrada;
 var Categoria = require('../models').Categoria;
+var Serie = require('../models').Serie;
 var Rss = require('../models').Rss;
 
 var cache = [];
@@ -24,8 +28,8 @@ function readRss(rssFeed) {
 	var feedparser = new FeedParser();
 
 	// ERROR url
-	req.on('error', function (err) {
-		console.error('Error request. ' + err);
+	req.on('error', function (e) {
+		console.error('Error request. ' + e);
 	});
 	
 	// OK url
@@ -37,8 +41,8 @@ function readRss(rssFeed) {
 	});
 
 	// ERROR rss
-	feedparser.on('error', function(err) {
-		console.error('Error read feed. ' + err);
+	feedparser.on('error', function(e) {
+		console.error('Error read feed. ' + e);
 	});
 	
 	// OK rss
@@ -99,12 +103,39 @@ function crearCategoria(entrada) {
 		}
 	}).spread(function(categoria, created) {
 		if (created) {
-			console.log('Se ha creado la categoría ' + categoria.nombre);
+			console.info('Se ha creado la categoría ' + categoria.nombre);
 		}
 		entrada.categoriaId = categoria.id;
+		
+		if (categoria.serie) {
+			crearSerie(entrada);
+		} else {
+			crearEntrada(entrada);
+		}
+	}).catch(function (e) {
+		console.error('No se ha podido guardar la categoria. ' + e);
+		checkCache();
+	});
+}
+
+function crearSerie(entrada) {
+	
+	var nombreSerie = entrada.titulo.split('-')[0].trim();
+
+	Serie.findOrCreate({
+		where: {
+			nombre: nombreSerie,
+		}
+	}).spread(function(serie, created) {
+		if (created) {
+			console.info('Se ha creado la serie ' + serie.nombre);
+		}
+		
+		entrada.serieId = serie.id;
+		
 		crearEntrada(entrada);
-	}).error(function(err) {
-		console.error('No se ha podido guardar la categoria. ' + err);
+	}).catch(function (e) {
+		console.error('No se ha podido guardar la serie. ' + e);
 		checkCache();
 	});
 }
@@ -117,11 +148,12 @@ function crearEntrada(entrada) {
 		imagen: 		entrada.imagen,
 		fecha: 			entrada.fecha,
 		categoriaId: 	entrada.categoriaId,
+		serieId:		entrada.serieId,
 		rssId: 			entrada.rssId,
 	}).then(function(result) {
-		console.log('--> Guardado: ' + result.titulo);
-	}).catch(function(err) {
-		console.error('No se ha podido guardar la entrada. ' + err);
+		console.info('--> Guardado: ' + result.titulo);
+	}).catch(function(e) {
+		console.error('No se ha podido guardar la entrada "' + entrada.titulo + '". ' + e);
 	}).finally(function() {
 		checkCache();
 	});

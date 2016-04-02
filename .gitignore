@@ -37,6 +37,6 @@ node_modules
 
 # eclipse
 .project
-/bd.sqlite
+/*.sqlite
 /scripts/
 /torrents/

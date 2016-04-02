@@ -71,7 +71,7 @@ exports.download = function(entrada, callback) {
 		} else {
 			console.info('No hay pasos para el rss -> ' + entrada.rssId);
 		}
-	}).error(function(err) {
+	}).error(function(e) {
 		console.error('Error al recuperar lista de pasos para el rss' + entrada.rssId);
 	});
 }

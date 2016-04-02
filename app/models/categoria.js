@@ -20,11 +20,13 @@ module.exports = function(sequelize, DataTypes) {
 		
 	}, {
 		hooks: {
-			beforeCreate: function(categoria) {
-				if (categoria.nombre.toLowerCase().includes('serie')) {
-					categoria.serie = true;
-				} else {
-					categoria.serie = false;
+			beforeValidate: function(categoria) {
+				if (categoria.serie !== true && categoria.serie !== false) {
+					if (categoria.nombre.toLowerCase().includes('serie')) {
+						categoria.serie = true;
+					} else {
+						categoria.serie = false;
+					}
 				}
 			},
 		},
