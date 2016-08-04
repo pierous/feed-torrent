@@ -43,5 +43,15 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue: null,
 		},
 		
+		temporada: {
+			type: DataTypes.INTEGER,
+			defaultValue: null,
+		},
+		
+		capitulo: {
+			type: DataTypes.INTEGER,
+			defaultValue: null,
+		},
+		
 	});
 }

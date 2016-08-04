@@ -8,7 +8,7 @@ var sequelize = new Sequelize(null, null, null, {
 	protocol: 	"sqlite",
 	port:		null,
 	host:		null,
-	storage: 	"./bd-1.sqlite",	// solo SQLite (.env)
+	storage: 	"./bd.sqlite",	// solo SQLite (.env)
 	}
 );
 

@@ -1,9 +1,22 @@
+var Filter = require('../filters/generic.server.filter.js');
 var Entrada = require('../models').Entrada;
 var downloadService = require('../services/download.server.service');
 
 // Obtiene todas las entradas de la base de datos
 exports.findAll = function (req, res) {
-	Entrada.findAll({}).then(function(result) {
+	
+	var filtro = new Filter();
+	
+	if (req.query.filtro) {
+		var a = JSON.parse(req.query.filtro);
+		var fil = new Filter();
+		fil.equal('categoriaId', a.categoriaId);
+		fil.equal('serieId', a.serieId);
+//		if (a.categoriaId) 
+			//filtro.add(categoriaId: a.categoriaId);
+	}
+	
+	Entrada.findAll(filtro.getCriteria()).then(function(result) {
 		if (result) {
 			res.json(result);
 		} else {

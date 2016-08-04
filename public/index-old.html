@@ -1,0 +1,86 @@
+<!doctype html>
+
+<html ng-app="MainApp">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ejemplo MEAN</title>
+	<!-- Cargamos bootstrap -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+	<!-- Cargamos angular -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+	<!-- Cargamos el javascript de angular -->
+	<script src="client/controllers/core.js"></script>
+
+</head>
+
+<body ng-controller="mainController">
+
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+		
+			<div class="navbar-header">
+      			<a class="navbar-brand" href="#">Feed Torrent</a>
+			</div>
+			
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Entradas</a></li>
+					<li><a href="#">Fuentes</a></li>
+				</ul>
+			</div>
+			
+		</div>
+	</nav>
+	
+	
+	<div class="container">
+
+		<div class="jumbotron text-center" ng-prueba>
+			<h1>Nº de Registros: <span class="label label-success">{{ personas.length }}</span></h1>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-12">
+				<table class="table table-striped">
+					<tr class="info">
+						<td>Titulo</td>
+						<td>Categoria</td>
+						<td>Fecha</td>
+						<td>Acciones</td>
+					</tr>
+					<tr ng-repeat="persona in personas" ng-click="selectPerson(persona)">
+						<td>{{ persona.titulo }}</td>
+						<td>{{ persona.categories }}</td>
+						<td>{{ persona.fecha }}</td>
+						<td style="width: 110px">
+							<div class="btn-toolbar" role="toolbar">
+							<a href="#" class="btn btn-primary" role="button" title="Descargar"
+									ng-click="downloadTorrent(persona.id)">
+								<span class="glyphicon glyphicon-save"></span>
+							</a>
+							<a href="{{ persona.url }}" target="_blank" class="btn btn-warning" role="button" title="Abrir enlace">
+								<span class="glyphicon glyphicon-new-window"></span>
+							</a>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<!--div class="col-sm-4 col-sm-offset-1 text-center">
+				<form name="myForm">
+					<div class="form-group">
+						<input type="text" class="form-control input-lg text-center" placeholder="Titulo" ng-model="newPersona.titulo" required>
+						<br>
+						<input type="text" class="form-control input-lg text-center" placeholder="Url" ng-model="newPersona.url" required>
+					</div>
+
+					<button type="submit" class="btn btn-success btn-lg" ng-click="registrarPersona()" ng-disabled="myForm.$invalid || selected">Registrar</button>
+					<button type="submit" class="btn btn-warning btn-lg" ng-click="modificarPersona(newPersona)" ng-disabled="!newPersona.titulo || !newPersona.url  || !selected">Modificar</button>
+					<button type="submit" class="btn btn-danger btn-lg" ng-click="borrarPersona(newPersona)" ng-disabled="!newPersona.titulo || !newPersona.url  || !selected">Borrar</button>
+				</form>
+			</div-->
+		</div>
+	</div>
+</body>
+</html>

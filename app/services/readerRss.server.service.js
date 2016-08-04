@@ -1,6 +1,7 @@
 var request = require('request');
 var FeedParser = require('feedparser');
 var Sequelize = require('sequelize');
+var Parser = require('../utils/parser.js');
 
 // MODELOS
 var Entrada = require('../models').Entrada;
@@ -142,6 +143,8 @@ function crearSerie(entrada) {
 
 function crearEntrada(entrada) {
 	
+	var info = Parser.getInfo(entrada.titulo);
+	
 	Entrada.create({
 		titulo: 		entrada.titulo,
 		url: 			entrada.url,
@@ -149,6 +152,8 @@ function crearEntrada(entrada) {
 		fecha: 			entrada.fecha,
 		categoriaId: 	entrada.categoriaId,
 		serieId:		entrada.serieId,
+		temporada:		info.temporada,
+		capitulo:		info.capitulo,
 		rssId: 			entrada.rssId,
 	}).then(function(result) {
 		console.info('--> Guardado: ' + result.titulo);

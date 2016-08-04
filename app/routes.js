@@ -1,5 +1,6 @@
 var rssController = require('./controllers/rss.server.controller');
 var categoriaController = require('./controllers/categoria.server.controller');
+var serieController = require('./controllers/serie.server.controller');
 var entradaController = require('./controllers/entrada.server.controller');
 
 module.exports = function(app) {
@@ -27,6 +28,18 @@ module.exports = function(app) {
 	app.put('/api/categoria/:id', categoriaController.update);
 	// Borrar una categoría
 	app.delete('/api/categoria/:id', categoriaController.delete);
+	
+	/**
+	 * SERIE
+	 */
+	// devolver todas las categorías
+	app.get('/api/serie', serieController.findAll);
+	// Crear una nueva categoría
+	app.post('/api/serie', serieController.save);
+	// Modificar los datos de una categoría
+	app.put('/api/serie/:id', serieController.update);
+	// Borrar una categoría
+	app.delete('/api/serie/:id', serieController.delete);
 
 	/**
 	 * ENTRADA
