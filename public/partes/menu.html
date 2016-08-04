@@ -1,0 +1,22 @@
+<nav ng-controller='menuController' class="navbar navbar-default">
+	<div class="container-fluid">
+	
+		<div class="navbar-header">
+			<a class="navbar-brand">Feed Torrent</a>
+		</div>
+			
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li id="entrada" class="active">
+					<a href="#/entrada" ng-click="cambiarMenu('entrada')">Entradas</a>
+				</li>
+				<li id="serie">
+					<a href="#/serie" ng-click="cambiarMenu('serie')">Series</a>
+				</li>
+				<li id="rss">
+					<a href="#/rss" ng-click="cambiarMenu('rss')">Feeds</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>

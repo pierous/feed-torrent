@@ -1,0 +1,41 @@
+<div class="jumbotron text-center">
+	<h2>Nº de Registros: <span class="label label-success">{{ entradas.length }}</span></h2>
+	<form ng-submit="findEntradas()">
+		<select name="categoria" ng-model="filtro.categoriaId">
+			<option ng-repeat="option in categorias" value="{{option.id}}">{{option.nombre}}</option>
+		</select>
+		<select name="serie" ng-model="filtro.serieId">
+			<option ng-repeat="option in series" value="{{option.id}}">{{option.nombre}}</option>
+		</select>
+		<input type="submit" class="btn btn-primary" value="Buscar" />
+	</form>
+</div>
+
+
+<div class="row">
+	<div class="col-sm-12">
+		<table class="table table-striped">
+			<tr class="info">
+				<td>Titulo</td>
+				<td>Fecha</td>
+				<td>Acciones</td>
+			</tr>
+			<tr ng-repeat="entrada in entradas" ng-click="selectPerson(entrada)">
+				<td>{{ entrada.titulo }}</td>
+				<td>{{ entrada.fecha | date: 'dd-MM-yyyy HH:mm:ss' }}</td>
+				<td style="width: 110px">
+					<div class="btn-toolbar" role="toolbar">
+						<button class="btn btn-primary" title="Descargar"
+								ng-click="downloadTorrent(entrada.id)">
+							<span class="glyphicon glyphicon-save"></span>
+						</button>
+						<a href="{{ entrada.url }}" target="_blank"
+								class="btn btn-warning" role="button" title="Abrir enlace">
+							<span class="glyphicon glyphicon-new-window"></span>
+						</a>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>

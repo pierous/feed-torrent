@@ -1,0 +1,33 @@
+<div class="jumbotron text-center">
+	<h2>Nº de Registros: <span class="label label-success">{{ feeds.length }}</span></h2>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<table class="table table-striped">
+			<tr class="info">
+				<td>Nombre</td>
+				<td>Url</td>
+				<td>Feed</td>
+				<td>Acciones</td>
+			</tr>
+			<tr ng-repeat="feed in feeds" ng-click="selectPerson(feeds)">
+				<td>{{ feed.nombre }}</td>
+				<td>{{ feed.url }}</td>
+				<td>{{ feed.feed }}</td>
+				<td style="width: 110px">
+					<div class="btn-toolbar" role="toolbar">
+						<a href="#" target="_blank"
+							class="btn btn-primary" role="button" title="Editar feed">
+							<span class="glyphicon glyphicon-pencil"></span>
+						</a>
+						<a href="{{ feed.url }}" target="_blank"
+							class="btn btn-warning" role="button" title="Abrir enlace">
+							<span class="glyphicon glyphicon-new-window"></span>
+						</a>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
